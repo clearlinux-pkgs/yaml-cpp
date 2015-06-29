@@ -1,0 +1,25 @@
+From ac3155f79010361bd7db7c6a86e99383041d2d7f Mon Sep 17 00:00:00 2001
+From: "Simental Magana, Marcos" <marcos.simental.magana@intel.com>
+Date: Mon, 6 Jul 2015 16:30:22 -0500
+Subject: [PATCH] fix libdir install
+
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 1897775..a65feaf 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -251,7 +251,7 @@ endif()
+ if(WIN32)
+ 	set(_library_dir bin)	# .dll are in PATH, like executables
+ else()
+-	set(_library_dir lib)
++	set(_library_dir lib64)
+ endif()
+ 
+ set(INCLUDE_INSTALL_ROOT_DIR include)
+-- 
+2.1.0
+
