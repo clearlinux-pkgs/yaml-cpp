@@ -1,1 +1,2 @@
-0001-fix-libdir-install.patch
+yaml-cpp-CVE-2017-5950.patch
+yaml-cpp-fix-pie.patch
