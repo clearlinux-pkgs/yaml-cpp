@@ -73,6 +73,8 @@ libyaml-cpp.so.0.6:_ZN4YAML12IsNullStringERKNSt7__cxx1112basic_stringIcSt11char_
 libyaml-cpp.so.0.6:_ZN4YAML13BadConversionD0Ev
 libyaml-cpp.so.0.6:_ZN4YAML13BadConversionD1Ev
 libyaml-cpp.so.0.6:_ZN4YAML13BadConversionD2Ev
+libyaml-cpp.so.0.6:_ZN4YAML13DeepRecursionC1EiRKNS_4MarkERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+libyaml-cpp.so.0.6:_ZN4YAML13DeepRecursionC2EiRKNS_4MarkERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
 libyaml-cpp.so.0.6:_ZN4YAML13InvalidScalarD0Ev
 libyaml-cpp.so.0.6:_ZN4YAML13InvalidScalarD1Ev
 libyaml-cpp.so.0.6:_ZN4YAML13InvalidScalarD2Ev

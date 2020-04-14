@@ -1,0 +1,110 @@
+From d8990b80c2ae36ba421564b58be7714199117d7a Mon Sep 17 00:00:00 2001
+From: "Igor [hyperxor]" <56217938+hyperxor@users.noreply.github.com>
+Date: Sat, 23 Nov 2019 22:17:02 +0300
+Subject: [PATCH 1/2] Small readability improvements in Parser
+
+Also add a test for a parser with no data
+---
+Needed in order to backport tests for CVE-2017-5950, CVE-2018-20573,
+CVE-2018-20574, and CVE-2019-6285.
+
+ src/parser.cpp            | 18 +++++-------------
+ test/mock_event_handler.h |  3 +++
+ test/parser_test.cpp      | 16 ++++++++++++++++
+ 3 files changed, 24 insertions(+), 13 deletions(-)
+ create mode 100644 test/parser_test.cpp
+
+diff --git a/src/parser.cpp b/src/parser.cpp
+index cd69f39..e66ca95 100644
+--- a/src/parser.cpp
++++ b/src/parser.cpp
+@@ -18,7 +18,7 @@ Parser::Parser(std::istream& in) { Load(in); }
+ Parser::~Parser() {}
+ 
+ Parser::operator bool() const {
+-  return m_pScanner.get() && !m_pScanner->empty();
++  return m_pScanner && !m_pScanner->empty();
+ }
+ 
+ void Parser::Load(std::istream& in) {
+@@ -27,7 +27,7 @@ void Parser::Load(std::istream& in) {
+ }
+ 
+ bool Parser::HandleNextDocument(EventHandler& eventHandler) {
+-  if (!m_pScanner.get())
++  if (!m_pScanner)
+     return false;
+ 
+   ParseDirectives();
+@@ -43,11 +43,7 @@ bool Parser::HandleNextDocument(EventHandler& eventHandler) {
+ void Parser::ParseDirectives() {
+   bool readDirective = false;
+ 
+-  while (1) {
+-    if (m_pScanner->empty()) {
+-      break;
+-    }
+-
++  while (!m_pScanner->empty()) {
+     Token& token = m_pScanner->peek();
+     if (token.type != Token::DIRECTIVE) {
+       break;
+@@ -113,15 +109,11 @@ void Parser::HandleTagDirective(const Token& token) {
+ }
+ 
+ void Parser::PrintTokens(std::ostream& out) {
+-  if (!m_pScanner.get()) {
++  if (!m_pScanner) {
+     return;
+   }
+ 
+-  while (1) {
+-    if (m_pScanner->empty()) {
+-      break;
+-    }
+-
++  while (!m_pScanner->empty()) {
+     out << m_pScanner->peek() << "\n";
+     m_pScanner->pop();
+   }
+diff --git a/test/mock_event_handler.h b/test/mock_event_handler.h
+index 49d1f0c..95f4c5a 100644
+--- a/test/mock_event_handler.h
++++ b/test/mock_event_handler.h
+@@ -1,8 +1,11 @@
+ #include "yaml-cpp/emitterstyle.h"
+ #include "yaml-cpp/eventhandler.h"
++#include "yaml-cpp/mark.h"
+ 
+ #include "gmock/gmock.h"
+ 
++#include <string>
++
+ namespace YAML {
+ 
+ class MockEventHandler : public EventHandler {
+diff --git a/test/parser_test.cpp b/test/parser_test.cpp
+new file mode 100644
+index 0000000..edd699e
+--- /dev/null
++++ b/test/parser_test.cpp
+@@ -0,0 +1,16 @@
++#include "yaml-cpp/parser.h"
++#include "mock_event_handler.h"
++#include "gtest/gtest.h"
++
++using YAML::Parser;
++using YAML::MockEventHandler;
++using ::testing::StrictMock;
++
++TEST(ParserTest, Empty) {
++    Parser parser;
++
++    EXPECT_FALSE(parser);
++
++    StrictMock<MockEventHandler> handler;
++    EXPECT_FALSE(parser.HandleNextDocument(handler));
++}
+-- 
+2.26.0
+
