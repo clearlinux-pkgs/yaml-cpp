@@ -4,7 +4,7 @@
 #
 Name     : yaml-cpp
 Version  : 0.6.2
-Release  : 17
+Release  : 18
 URL      : https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-0.6.2.tar.gz
 Source0  : https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-0.6.2.tar.gz
 Summary  : No detailed summary available
